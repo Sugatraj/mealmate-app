@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Clock, ShieldAlert } from 'lucide-react';
 
@@ -8,8 +9,17 @@ interface ApprovalGateProps {
   children: ReactNode;
 }
 
+const PUBLIC_ROUTES = ['/', '/login', '/signup', '/forgot-password'];
+
 export function ApprovalGate({ children }: ApprovalGateProps) {
+  const pathname = usePathname();
   const { userProfile, loading, isApproved, isAdmin, logout } = useAuth();
+
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+
+  if (isPublicRoute) {
+    return <>{children}</>;
+  }
 
   if (loading) {
     return (
