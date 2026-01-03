@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingUp, Calendar, DollarSign, PieChart } from 'lucide-react';
+import { TrendingUp, Calendar, IndianRupee, PieChart } from 'lucide-react';
 
 interface SummaryCardProps {
   title: string;
@@ -17,7 +17,7 @@ interface SummaryCardProps {
 const iconMap = {
   trending: TrendingUp,
   calendar: Calendar,
-  dollar: DollarSign,
+  dollar: IndianRupee,
   pie: PieChart,
 };
 

@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { usePricing } from '@/hooks/usePricing';
 import { AppLayout } from '@/components/AppLayout';
 import { PricingEditor } from '@/components/PricingEditor';
-import { DollarSign } from 'lucide-react';
+import { IndianRupee } from 'lucide-react';
 import { toast } from 'sonner';
 import { PricingConfig } from '@/lib/types';
 
@@ -54,7 +54,7 @@ function PricingPageContent() {
     <AppLayout>
       <div className="space-y-6 max-w-3xl mx-auto">
         <div className="flex items-center gap-3">
-          <DollarSign className="h-6 w-6 text-amber-600" />
+          <IndianRupee className="h-6 w-6 text-amber-600" />
           <h1 className="text-2xl font-bold text-gray-900">My Pricing</h1>
         </div>
 

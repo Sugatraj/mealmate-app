@@ -10,7 +10,7 @@ import {
   Home,
   Calendar,
   Settings,
-  DollarSign,
+  IndianRupee,
   FileDown,
   Users,
   Menu,
@@ -29,7 +29,7 @@ interface AppLayoutProps {
 const userNavItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
   { href: '/log', label: 'Log Entry', icon: Calendar },
-  { href: '/pricing', label: 'My Pricing', icon: DollarSign },
+  { href: '/pricing', label: 'My Pricing', icon: IndianRupee },
   { href: '/export', label: 'Export', icon: FileDown },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
