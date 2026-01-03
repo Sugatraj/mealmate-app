@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { ApprovalGate } from '@/components/ApprovalGate';
 import {
   Home,
   Calendar,
@@ -136,7 +137,11 @@ export function AppLayout({ children }: AppLayoutProps) {
         )}
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
+      <main className="mx-auto max-w-7xl px-4 py-6">
+        <ApprovalGate>
+          {children}
+        </ApprovalGate>
+      </main>
 
       <footer className="border-t border-amber-200 bg-white/50 py-4 mt-auto">
         <div className="mx-auto max-w-7xl px-4 text-center text-sm text-gray-500">
