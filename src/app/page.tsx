@@ -22,13 +22,13 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, isApproved, isAdmin } = useAuth();
 
   useEffect(() => {
-    if (!loading && user) {
+    if (!loading && user && (isApproved || isAdmin)) {
       router.push("/dashboard");
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, isApproved, isAdmin]);
 
   if (loading) {
     return (
@@ -101,14 +101,24 @@ export default function Home() {
             </span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/login" className="hidden sm:block">
-              <Button variant="ghost" className="text-slate-600 hover:text-amber-600">Sign In</Button>
-            </Link>
-            <Link href="/signup">
-              <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
-                Sign Up
-              </Button>
-            </Link>
+            {user ? (
+              <Link href="/dashboard">
+                <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
+                  Go to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="hidden sm:block">
+                  <Button variant="ghost" className="text-slate-600 hover:text-amber-600">Sign In</Button>
+                </Link>
+                <Link href="/signup">
+                  <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
+                    Sign Up
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -142,20 +152,34 @@ export default function Home() {
                     powerful way to log your daily tiffins and track every cent you spend on food.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                    <Link href="/signup">
-                      <Button
-                        size="lg"
-                        className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95"
-                      >
-                        Start Tracking Now
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </Link>
-                    <Link href="/login">
-                      <Button size="lg" variant="outline" className="h-14 rounded-full px-10 text-lg border-slate-200 hover:bg-slate-50 transition-all">
-                        View Demo
-                      </Button>
-                    </Link>
+                    {user ? (
+                      <Link href="/dashboard">
+                        <Button
+                          size="lg"
+                          className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95"
+                        >
+                          Go to Dashboard
+                          <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link href="/signup">
+                          <Button
+                            size="lg"
+                            className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95"
+                          >
+                            Start Tracking Now
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                          </Button>
+                        </Link>
+                        <Link href="/login">
+                          <Button size="lg" variant="outline" className="h-14 rounded-full px-10 text-lg border-slate-200 hover:bg-slate-50 transition-all">
+                            View Demo
+                          </Button>
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </motion.div>
               </div>
@@ -363,12 +387,21 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                    <Link href="/signup">
-                      <Button className="w-full h-14 rounded-2xl bg-amber-500 text-white font-bold text-lg hover:bg-amber-600 transition-all group">
-                        Get Started Free
-                        <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
+                    {user ? (
+                      <Link href="/dashboard">
+                        <Button className="w-full h-14 rounded-2xl bg-amber-500 text-white font-bold text-lg hover:bg-amber-600 transition-all group">
+                          Go to Dashboard
+                          <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link href="/signup">
+                        <Button className="w-full h-14 rounded-2xl bg-amber-500 text-white font-bold text-lg hover:bg-amber-600 transition-all group">
+                          Get Started Free
+                          <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
