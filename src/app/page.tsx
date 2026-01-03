@@ -5,7 +5,19 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Utensils, ArrowRight, TrendingUp, Calendar, DollarSign, Shield } from "lucide-react";
+import { 
+  Utensils, 
+  ArrowRight, 
+  TrendingUp, 
+  Calendar, 
+  DollarSign, 
+  Shield, 
+  CheckCircle2,
+  Clock,
+  PieChart,
+  Settings,
+  ChevronRight
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -34,21 +46,25 @@ export default function Home() {
       icon: Calendar,
       title: "Daily Logging",
       description: "Track your tiffin, meals, and snacks with just a few taps. Never miss a meal entry again.",
+      color: "bg-blue-500"
     },
     {
       icon: DollarSign,
       title: "Expense Tracking",
       description: "See exactly how much you're spending. Real-time cost calculation based on your custom pricing.",
+      color: "bg-green-500"
     },
     {
       icon: TrendingUp,
       title: "Monthly Analytics",
       description: "Beautiful charts showing your spending patterns by category and estimated vs actual costs.",
+      color: "bg-purple-500"
     },
     {
       icon: Shield,
       title: "Secure & Reliable",
       description: "Admin-verified accounts and offline support ensure your data is safe and always accessible.",
+      color: "bg-orange-500"
     },
   ];
 
@@ -72,23 +88,24 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 p-2">
-              <Utensils className="h-6 w-6 text-white" />
+    <div className="min-h-screen bg-slate-50 selection:bg-amber-100 selection:text-amber-900">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-100/50 bg-white/70 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-200">
+              <Utensils className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+            <span className="text-xl font-extrabold tracking-tight text-slate-900">
               MealMate
             </span>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button variant="ghost">Sign In</Button>
+          <div className="flex items-center gap-4">
+            <Link href="/login" className="hidden sm:block">
+              <Button variant="ghost" className="text-slate-600 hover:text-amber-600">Sign In</Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600">
+              <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
                 Sign Up
               </Button>
             </Link>
@@ -97,69 +114,142 @@ export default function Home() {
       </header>
 
       <main className="pt-16">
-        <section className="relative overflow-hidden py-20 md:py-32">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M15%200C6.716%200%200%206.716%200%2015c0%208.284%206.716%2015%2015%2015%208.284%200%2015-6.716%2015-15%200-8.284-6.716-15-15-15zm0%205c5.523%200%2010%204.477%2010%2010s-4.477%2010-10%2010S5%2020.523%205%2015%209.477%205%2015%205z%22%20fill%3D%22%23f59e0b%22%20fill-opacity%3D%220.03%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')] opacity-50" />
-          <div className="mx-auto max-w-6xl px-4 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center"
-            >
-              <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-amber-700 mb-6">
-                <Utensils className="h-4 w-4" />
-                <span className="text-sm font-medium">Your meal expense companion</span>
+        {/* Hero Section */}
+        <section className="relative overflow-hidden py-24 sm:py-32">
+          <div className="absolute -top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-amber-200/20 blur-[120px]" />
+          <div className="absolute -bottom-[10%] -left-[10%] h-[500px] w-[500px] rounded-full bg-orange-200/20 blur-[120px]" />
+          
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+            <div className="flex flex-col lg:flex-row items-center gap-16">
+              <div className="flex-1 text-center lg:text-left">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6">
+                    <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                    Trusted by 1,000+ Students & Professionals
+                  </div>
+                  <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                    Master Your <br />
+                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+                      Meal Expenses
+                    </span>
+                  </h1>
+                  <p className="text-xl text-slate-600 max-w-2xl mb-10 leading-relaxed">
+                    Stop guessing your monthly mess bill. MealMate provides a simple, 
+                    powerful way to log your daily tiffins and track every cent you spend on food.
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    <Link href="/signup">
+                      <Button
+                        size="lg"
+                        className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95"
+                      >
+                        Start Tracking Now
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </Button>
+                    </Link>
+                    <Link href="/login">
+                      <Button size="lg" variant="outline" className="h-14 rounded-full px-10 text-lg border-slate-200 hover:bg-slate-50 transition-all">
+                        View Demo
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Track Your{" "}
-                <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-                  Tiffin & Meals
-                </span>
-                <br />
-                Effortlessly
-              </h1>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-                MealMate helps you log daily food consumption, track expenses,
-                and understand your spending patterns. Perfect for mess or tiffin subscribers.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="/signup">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 px-8 py-6 text-lg"
-                  >
-                    Start Tracking Free
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/login">
-                  <Button size="lg" variant="outline" className="px-8 py-6 text-lg">
-                    Sign In
-                  </Button>
-                </Link>
+
+              {/* Showcase UI Mockup */}
+              <div className="flex-1 w-full max-w-2xl lg:max-w-none">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8, rotateY: -10 }}
+                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl shadow-amber-200/50"
+                >
+                  {/* Mock Dashboard Top */}
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center">
+                        <Settings className="h-5 w-5 text-slate-400" />
+                      </div>
+                      <div>
+                        <div className="h-3 w-24 rounded-full bg-slate-200 mb-1" />
+                        <div className="h-2 w-16 rounded-full bg-slate-100" />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                        <Calendar className="h-4 w-4 text-amber-600" />
+                      </div>
+                      <div className="h-8 w-8 rounded-lg bg-slate-50" />
+                    </div>
+                  </div>
+
+                  {/* Mock Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+                      <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Spent This Month</div>
+                      <div className="text-2xl font-bold text-slate-900">$342.50</div>
+                      <div className="mt-2 flex items-center text-xs text-green-600 font-medium">
+                        <TrendingUp className="h-3 w-3 mr-1" /> 12% vs last month
+                      </div>
+                    </div>
+                    <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+                      <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Meals</div>
+                      <div className="text-2xl font-bold text-slate-900">48</div>
+                      <div className="mt-2 flex items-center text-xs text-amber-600 font-medium">
+                        <PieChart className="h-3 w-3 mr-1" /> 82% tiffin rate
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mock Log Entry */}
+                  <div className="space-y-3">
+                    <div className="text-sm font-bold text-slate-900 mb-2">Recent Logs</div>
+                    {[
+                      { label: "Full Tiffin", price: "$5.00", time: "Today, 1:30 PM", icon: Utensils, color: "text-blue-500" },
+                      { label: "Evening Snacks", price: "$2.50", time: "Today, 5:45 PM", icon: Clock, color: "text-amber-500" },
+                      { label: "Half Meal", price: "$3.00", time: "Yesterday, 8:00 PM", icon: CheckCircle2, color: "text-green-500" }
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center justify-between rounded-lg border border-slate-100 p-3 bg-white hover:border-amber-200 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg bg-slate-50 ${item.color}`}>
+                            <item.icon className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-slate-900">{item.label}</div>
+                            <div className="text-xs text-slate-400">{item.time}</div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-bold text-slate-900">{item.price}</div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Floating Action Button Mock */}
+                  <div className="absolute -bottom-4 -right-4 h-12 w-12 rounded-full bg-amber-500 shadow-lg shadow-amber-300 flex items-center justify-center text-white cursor-pointer hover:scale-110 transition-transform">
+                    <span className="text-2xl font-bold">+</span>
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        <section className="py-20 bg-white/50">
-          <div className="mx-auto max-w-6xl px-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Everything you need to manage meals
-              </h2>
-              <p className="text-gray-600 max-w-xl mx-auto">
-                Simple yet powerful features to help you stay on top of your food expenses
+        {/* Features Section */}
+        <section className="py-24 bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Features</h2>
+              <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-6">Everything you need to manage meals</h3>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                Simple yet powerful features designed specifically for anyone who subscribes to a mess or tiffin service.
               </p>
-            </motion.div>
+            </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
@@ -167,105 +257,150 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl p-6 shadow-lg border border-amber-100 hover:shadow-xl transition-shadow"
+                  className="group relative rounded-2xl border border-slate-100 bg-slate-50/30 p-8 hover:bg-white hover:border-amber-200 hover:shadow-xl hover:shadow-amber-100/50 transition-all"
                 >
-                  <div className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 p-3 w-fit mb-4">
-                    <feature.icon className="h-6 w-6 text-white" />
+                  <div className={`rounded-xl ${feature.color} p-3 w-fit mb-6 text-white group-hover:scale-110 transition-transform`}>
+                    <feature.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h4 className="text-xl font-bold text-slate-900 mb-3">
                     {feature.title}
-                  </h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  </h4>
+                  <p className="text-slate-600 leading-relaxed">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-amber-50/50">
-          <div className="mx-auto max-w-6xl px-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                How It Works
-              </h2>
-              <p className="text-gray-600 max-w-xl mx-auto">
-                Getting started with MealMate is easy. Follow these simple steps:
-              </p>
-            </motion.div>
+        {/* How It Works Section */}
+        <section className="py-24 bg-slate-50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col lg:flex-row items-center gap-16">
+              <div className="lg:w-1/2">
+                <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Workflow</h2>
+                <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-8 leading-tight">
+                  Log your day in <br />
+                  <span className="text-amber-500 italic">less than 5 seconds</span>
+                </h3>
+                <div className="space-y-8">
+                  {steps.map((step, index) => (
+                    <motion.div 
+                      key={step.title}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-start gap-5"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border-2 border-amber-500 text-amber-600 font-bold shadow-sm">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-slate-900 mb-1">{step.title}</h4>
+                        <p className="text-slate-600">{step.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+              <div className="lg:w-1/2 w-full">
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                   <div className="bg-slate-900 aspect-video flex items-center justify-center p-8">
+                      <div className="text-center">
+                        <div className="h-20 w-20 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-6">
+                           <TrendingUp className="h-10 w-10 text-amber-500" />
+                        </div>
+                        <div className="text-white text-2xl font-bold mb-2">Real-time Analytics</div>
+                        <div className="text-slate-400">See your spending trends update instantly as you log.</div>
+                      </div>
+                   </div>
+                   <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md rounded-full px-4 py-1 text-xs font-semibold text-white border border-white/20">
+                     Live Preview
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div className="grid md:grid-cols-4 gap-8">
-              {steps.map((step, index) => (
-                <motion.div
-                  key={step.title}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="relative text-center"
-                >
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-white font-bold text-xl mb-4">
-                    {index + 1}
+        {/* Pricing/Value Section */}
+        <section className="py-24 bg-white overflow-hidden">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="rounded-[40px] bg-slate-900 py-16 px-8 md:px-16 relative">
+              <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-amber-500/10 blur-[100px]" />
+              <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-orange-500/10 blur-[100px]" />
+              
+              <div className="relative flex flex-col lg:flex-row items-center justify-between gap-12">
+                <div className="lg:w-1/2">
+                  <h3 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">Ready to take control of your meal expenses?</h3>
+                  <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                    Join hundreds of users who use MealMate to manage their food budget. 
+                    It&apos;s 100% free while in beta.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <CheckCircle2 className="h-5 w-5 text-amber-500" />
+                      <span>No Credit Card Required</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <CheckCircle2 className="h-5 w-5 text-amber-500" />
+                      <span>Instant Setup</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600">{step.description}</p>
-                  {index < steps.length - 1 && (
-                    <div className="hidden lg:block absolute top-6 left-1/2 w-full h-[2px] bg-amber-200 -z-10 translate-x-6" />
-                  )}
-                </motion.div>
-              ))}
+                </div>
+                <div className="lg:w-1/3 w-full">
+                  <div className="bg-white rounded-3xl p-8 shadow-xl">
+                    <div className="text-slate-500 font-bold uppercase tracking-widest text-xs mb-4">Beta Access</div>
+                    <div className="flex items-baseline gap-1 mb-6">
+                      <span className="text-5xl font-extrabold text-slate-900">$0</span>
+                      <span className="text-slate-500 font-medium">/ forever</span>
+                    </div>
+                    <ul className="space-y-4 mb-8">
+                      {["Unlimited Daily Logs", "Full Expense Tracking", "CSV Data Export", "Custom Pricing Table", "Mobile App (PWA)"].map(item => (
+                        <li key={item} className="flex items-center gap-3 text-slate-600 font-medium">
+                          <CheckCircle2 className="h-5 w-5 text-green-500" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href="/signup">
+                      <Button className="w-full h-14 rounded-2xl bg-amber-500 text-white font-bold text-lg hover:bg-amber-600 transition-all group">
+                        Get Started Free
+                        <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
-
-        <section className="py-20">
-          <div className="mx-auto max-w-6xl px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl p-8 md:p-12 text-center text-white"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Ready to take control of your meal expenses?
-              </h2>
-              <p className="text-amber-100 max-w-xl mx-auto mb-8">
-                Join MealMate today and start tracking your food consumption.
-                It&apos;s free to get started!
-              </p>
-              <Link href="/signup">
-                <Button
-                  size="lg"
-                  className="bg-white text-amber-600 hover:bg-amber-50 px-8 py-6 text-lg"
-                >
-                  Create Your Account
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </motion.div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-amber-200 bg-white/50 py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 p-1.5">
-              <Utensils className="h-4 w-4 text-white" />
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-white py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
+                <Utensils className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-lg font-extrabold tracking-tight text-slate-900">
+                MealMate
+              </span>
             </div>
-            <span className="font-semibold text-gray-900">MealMate</span>
+            
+            <div className="flex items-center gap-8">
+              <Link href="/login" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Sign In</Link>
+              <Link href="/signup" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Sign Up</Link>
+              <a href="#" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Privacy</a>
+              <a href="#" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Terms</a>
+            </div>
           </div>
-          <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} MealMate. Track your meals, control your expenses.
-          </p>
+          <div className="mt-12 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm">
+            &copy; {new Date().getFullYear()} MealMate. All rights reserved. 
+            Designed for better food management.
+          </div>
         </div>
       </footer>
     </div>
