@@ -33,22 +33,41 @@ export default function Home() {
     {
       icon: Calendar,
       title: "Daily Logging",
-      description: "Track your tiffin, meals, and snacks with just a few taps",
+      description: "Track your tiffin, meals, and snacks with just a few taps. Never miss a meal entry again.",
     },
     {
       icon: DollarSign,
       title: "Expense Tracking",
-      description: "See exactly how much you're spending on food each month",
+      description: "See exactly how much you're spending. Real-time cost calculation based on your custom pricing.",
     },
     {
       icon: TrendingUp,
-      title: "Analytics",
-      description: "Beautiful charts showing your spending patterns by category",
+      title: "Monthly Analytics",
+      description: "Beautiful charts showing your spending patterns by category and estimated vs actual costs.",
     },
     {
       icon: Shield,
-      title: "Offline Ready",
-      description: "Works offline and syncs when you're back online",
+      title: "Secure & Reliable",
+      description: "Admin-verified accounts and offline support ensure your data is safe and always accessible.",
+    },
+  ];
+
+  const steps = [
+    {
+      title: "Sign Up",
+      description: "Create your account and wait for admin approval to ensure a secure community.",
+    },
+    {
+      title: "Set Your Pricing",
+      description: "Configure how much you pay for full tiffins, half meals, or custom snacks.",
+    },
+    {
+      title: "Log Daily",
+      description: "Quickly mark what you ate today. Use bulk operations for vacations or leaves.",
+    },
+    {
+      title: "Analyze & Export",
+      description: "Review your monthly summaries and export data to CSV for your records.",
     },
   ];
 
@@ -70,7 +89,7 @@ export default function Home() {
             </Link>
             <Link href="/signup">
               <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600">
-                Get Started
+                Sign Up
               </Button>
             </Link>
           </div>
@@ -157,6 +176,49 @@ export default function Home() {
                     {feature.title}
                   </h3>
                   <p className="text-gray-600">{feature.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 bg-amber-50/50">
+          <div className="mx-auto max-w-6xl px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                How It Works
+              </h2>
+              <p className="text-gray-600 max-w-xl mx-auto">
+                Getting started with MealMate is easy. Follow these simple steps:
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-4 gap-8">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="relative text-center"
+                >
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-white font-bold text-xl mb-4">
+                    {index + 1}
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600">{step.description}</p>
+                  {index < steps.length - 1 && (
+                    <div className="hidden lg:block absolute top-6 left-1/2 w-full h-[2px] bg-amber-200 -z-10 translate-x-6" />
+                  )}
                 </motion.div>
               ))}
             </div>
