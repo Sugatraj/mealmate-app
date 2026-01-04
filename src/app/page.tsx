@@ -101,6 +101,8 @@ export default function LandingPage() {
             </span>
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/how-it-works" className="hidden md:block text-sm font-semibold text-slate-600 hover:text-amber-600 transition-colors">How it Works</Link>
+            <Link href="/faq" className="hidden md:block text-sm font-semibold text-slate-600 hover:text-amber-600 transition-colors">FAQ</Link>
             {user ? (
               <Link href="/dashboard">
                 <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
@@ -424,8 +426,10 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-center gap-8">
-              <Link href="/login" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Sign In</Link>
-              <Link href="/signup" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Sign Up</Link>
+              <Link href="/about" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">About Us</Link>
+              <Link href="/how-it-works" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">How it Works</Link>
+              <Link href="/faq" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">FAQ</Link>
+              <Link href="/contact" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Contact</Link>
               <a href="#" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Privacy</a>
               <a href="#" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Terms</a>
             </div>
