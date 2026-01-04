@@ -9,7 +9,7 @@ interface ApprovalGateProps {
   children: ReactNode;
 }
 
-const PUBLIC_ROUTES = ['/', '/login', '/signup', '/forgot-password'];
+const PUBLIC_ROUTES = ['/', '/login', '/signup', '/forgot-password', '/how-it-works', '/faq', '/about', '/contact'];
 
 export function ApprovalGate({ children }: ApprovalGateProps) {
   const pathname = usePathname();
