@@ -139,7 +139,7 @@ export default function LandingPage() {
                 >
                   <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6">
                     <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-                    Trusted by 1,000+ Students & Professionals
+                    Trusted by students & professionals worldwide
                   </div>
                   <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
                     Master Your <br />
