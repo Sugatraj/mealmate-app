@@ -3,24 +3,17 @@
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Utensils, ChevronLeft } from "lucide-react";
+import { Utensils } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function Header() {
   const { user } = useAuth();
   const pathname = usePathname();
-  const isHome = pathname === "/";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-100/50 bg-white/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
-          {!isHome && (
-            <Link href="/" className="flex items-center gap-2 group">
-              <ChevronLeft className="h-4 w-4 text-slate-400 group-hover:text-amber-600 transition-colors" />
-              <span className="hidden sm:inline text-sm font-medium text-slate-500 group-hover:text-slate-900 transition-colors">Back to Home</span>
-            </Link>
-          )}
           <Link href="/" className="flex items-center gap-2.5">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-200">
               <Utensils className="h-5 w-5 text-white" />
