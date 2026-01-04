@@ -92,32 +92,69 @@ export default function LandingPage() {
       <main>
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 sm:py-32">
-          <div className="absolute -top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-amber-200/20 blur-[120px]" />
-          <div className="absolute -bottom-[10%] -left-[10%] h-[500px] w-[500px] rounded-full bg-orange-200/20 blur-[120px]" />
+          {/* Animated Background Elements */}
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              x: [0, 50, 0],
+              y: [0, 30, 0] 
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-amber-200/20 blur-[120px]" 
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1.2, 1, 1.2],
+              x: [0, -50, 0],
+              y: [0, -30, 0] 
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-[10%] -left-[10%] h-[500px] w-[500px] rounded-full bg-orange-200/20 blur-[120px]" 
+          />
           
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
             <div className="flex flex-col lg:flex-row items-center gap-16">
               <div className="flex-1 text-center lg:text-left">
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                  <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6"
+                  >
                     <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
                     Trusted by students & professionals worldwide
-                  </div>
-                  <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                  </motion.div>
+                  <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    className="text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]"
+                  >
                     Master Your <br />
                     <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
                       Meal Expenses
                     </span>
-                  </h1>
-                  <p className="text-xl text-slate-600 max-w-2xl mb-10 leading-relaxed">
+                  </motion.h1>
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                    className="text-xl text-slate-600 max-w-2xl mb-10 leading-relaxed"
+                  >
                     Stop guessing your monthly mess bill. MealMate provides a simple, 
                     powerful way to log your daily tiffins and track every cent you spend on food.
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                  </motion.p>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+                  >
                     {user ? (
                       <Link href="/dashboard">
                         <Button
@@ -146,7 +183,7 @@ export default function LandingPage() {
                         </Link>
                       </>
                     )}
-                  </div>
+                  </motion.div>
                 </motion.div>
               </div>
 
@@ -155,15 +192,20 @@ export default function LandingPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8, rotateY: -10 }}
                   animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
+                  transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                  whileHover={{ y: -10, rotateX: 2, rotateY: 2 }}
                   className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl shadow-amber-200/50"
                 >
                   {/* Mock Dashboard Top */}
                   <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center">
+                      <motion.div 
+                        animate={{ rotate: [0, 10, 0] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                        className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center"
+                      >
                         <Settings className="h-5 w-5 text-slate-400" />
-                      </div>
+                      </motion.div>
                       <div>
                         <div className="h-3 w-24 rounded-full bg-slate-200 mb-1" />
                         <div className="h-2 w-16 rounded-full bg-slate-100" />
@@ -179,20 +221,26 @@ export default function LandingPage() {
 
                   {/* Mock Stats */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="rounded-xl border border-slate-100 bg-slate-50/50 p-4"
+                    >
                       <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Spent This Month</div>
                       <div className="text-2xl font-bold text-slate-900">$342.50</div>
                       <div className="mt-2 flex items-center text-xs text-green-600 font-medium">
                         <TrendingUp className="h-3 w-3 mr-1" /> 12% vs last month
                       </div>
-                    </div>
-                    <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+                    </motion.div>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      className="rounded-xl border border-slate-100 bg-slate-50/50 p-4"
+                    >
                       <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Meals</div>
                       <div className="text-2xl font-bold text-slate-900">48</div>
                       <div className="mt-2 flex items-center text-xs text-amber-600 font-medium">
                         <PieChart className="h-3 w-3 mr-1" /> 82% tiffin rate
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
 
                   {/* Mock Log Entry */}
@@ -203,7 +251,14 @@ export default function LandingPage() {
                       { label: "Evening Snacks", price: "$2.50", time: "Today, 5:45 PM", icon: Clock, color: "text-amber-500" },
                       { label: "Half Meal", price: "$3.00", time: "Yesterday, 8:00 PM", icon: CheckCircle2, color: "text-green-500" }
                     ].map((item, i) => (
-                      <div key={i} className="flex items-center justify-between rounded-lg border border-slate-100 p-3 bg-white hover:border-amber-200 transition-colors">
+                      <motion.div 
+                        key={i} 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6 + (i * 0.1) }}
+                        whileHover={{ x: 5 }}
+                        className="flex items-center justify-between rounded-lg border border-slate-100 p-3 bg-white hover:border-amber-200 transition-colors"
+                      >
                         <div className="flex items-center gap-3">
                           <div className={`p-2 rounded-lg bg-slate-50 ${item.color}`}>
                             <item.icon className="h-4 w-4" />
@@ -214,14 +269,19 @@ export default function LandingPage() {
                           </div>
                         </div>
                         <div className="text-sm font-bold text-slate-900">{item.price}</div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                   
                   {/* Floating Action Button Mock */}
-                  <div className="absolute -bottom-4 -right-4 h-12 w-12 rounded-full bg-amber-500 shadow-lg shadow-amber-300 flex items-center justify-center text-white cursor-pointer hover:scale-110 transition-transform">
+                  <motion.div 
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    whileHover={{ scale: 1.1 }}
+                    className="absolute -bottom-4 -right-4 h-12 w-12 rounded-full bg-amber-500 shadow-lg shadow-amber-300 flex items-center justify-center text-white cursor-pointer hover:bg-amber-600 transition-colors"
+                  >
                     <span className="text-2xl font-bold">+</span>
-                  </div>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>
@@ -231,27 +291,38 @@ export default function LandingPage() {
         {/* Features Section */}
         <section className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
               <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Features</h2>
               <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-6">Everything you need to manage meals</h3>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                 Simple yet powerful features designed specifically for anyone who subscribes to a mess or tiffin service.
               </p>
-            </div>
+            </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
                   className="group relative rounded-2xl border border-slate-100 bg-slate-50/30 p-8 hover:bg-white hover:border-amber-200 hover:shadow-xl hover:shadow-amber-100/50 transition-all"
                 >
-                  <div className={`rounded-xl ${feature.color} p-3 w-fit mb-6 text-white group-hover:scale-110 transition-transform`}>
+                  <motion.div 
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                    className={`rounded-xl ${feature.color} p-3 w-fit mb-6 text-white group-hover:scale-110 transition-transform`}
+                  >
                     <feature.icon className="h-6 w-6" />
-                  </div>
+                  </motion.div>
                   <h4 className="text-xl font-bold text-slate-900 mb-3">
                     {feature.title}
                   </h4>
@@ -263,30 +334,40 @@ export default function LandingPage() {
         </section>
 
         {/* How It Works Section */}
-        <section className="py-24 bg-slate-50">
+        <section className="py-24 bg-slate-50 overflow-hidden">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row items-center gap-16">
               <div className="lg:w-1/2">
-                <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Workflow</h2>
-                <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-8 leading-tight">
-                  Log your day in <br />
-                  <span className="text-amber-500 italic">less than 5 seconds</span>
-                </h3>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Workflow</h2>
+                  <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-8 leading-tight">
+                    Log your day in <br />
+                    <span className="text-amber-500 italic">less than 5 seconds</span>
+                  </h3>
+                </motion.div>
                 <div className="space-y-8">
                   {steps.map((step, index) => (
                     <motion.div 
                       key={step.title}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: -30 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-start gap-5"
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="flex items-start gap-5 group"
                     >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border-2 border-amber-500 text-amber-600 font-bold shadow-sm">
+                      <motion.div 
+                        whileInView={{ scale: [1, 1.2, 1] }}
+                        transition={{ delay: index * 0.1 + 0.3 }}
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border-2 border-amber-500 text-amber-600 font-bold shadow-sm group-hover:bg-amber-500 group-hover:text-white transition-colors"
+                      >
                         {index + 1}
-                      </div>
+                      </motion.div>
                       <div>
-                        <h4 className="text-lg font-bold text-slate-900 mb-1">{step.title}</h4>
+                        <h4 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-amber-600 transition-colors">{step.title}</h4>
                         <p className="text-slate-600">{step.description}</p>
                       </div>
                     </motion.div>
@@ -294,12 +375,25 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="lg:w-1/2 w-full">
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                  whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="relative rounded-3xl overflow-hidden shadow-2xl"
+                >
                    <div className="bg-slate-900 aspect-video flex items-center justify-center p-8">
                       <div className="text-center">
-                        <div className="h-20 w-20 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-6">
+                        <motion.div 
+                          animate={{ 
+                            scale: [1, 1.1, 1],
+                            rotate: [0, 5, -5, 0]
+                          }}
+                          transition={{ duration: 5, repeat: Infinity }}
+                          className="h-20 w-20 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-6"
+                        >
                            <TrendingUp className="h-10 w-10 text-amber-500" />
-                        </div>
+                        </motion.div>
                         <div className="text-white text-2xl font-bold mb-2">Real-time Analytics</div>
                         <div className="text-slate-400">See your spending trends update instantly as you log.</div>
                       </div>
@@ -307,7 +401,7 @@ export default function LandingPage() {
                    <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md rounded-full px-4 py-1 text-xs font-semibold text-white border border-white/20">
                      Live Preview
                    </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -316,41 +410,101 @@ export default function LandingPage() {
         {/* Pricing/Value Section */}
         <section className="py-24 bg-white overflow-hidden">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="rounded-[40px] bg-slate-900 py-16 px-8 md:px-16 relative">
-              <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-amber-500/10 blur-[100px]" />
-              <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-orange-500/10 blur-[100px]" />
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="rounded-[40px] bg-slate-900 py-16 px-8 md:px-16 relative overflow-hidden"
+            >
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.5, 1],
+                  opacity: [0.1, 0.2, 0.1]
+                }}
+                transition={{ duration: 10, repeat: Infinity }}
+                className="absolute top-0 right-0 h-64 w-64 rounded-full bg-amber-500/10 blur-[100px]" 
+              />
+              <motion.div 
+                animate={{ 
+                  scale: [1.5, 1, 1.5],
+                  opacity: [0.1, 0.2, 0.1]
+                }}
+                transition={{ duration: 10, repeat: Infinity }}
+                className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-orange-500/10 blur-[100px]" 
+              />
               
               <div className="relative flex flex-col lg:flex-row items-center justify-between gap-12">
                 <div className="lg:w-1/2">
-                  <h3 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">Ready to take control of your meal expenses?</h3>
-                  <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                  <motion.h3 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="text-3xl sm:text-4xl font-extrabold text-white mb-6"
+                  >
+                    Ready to take control of your meal expenses?
+                  </motion.h3>
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className="text-slate-400 text-lg mb-8 leading-relaxed"
+                  >
                     Join hundreds of users who use MealMate to manage their food budget. 
                     It&apos;s 100% free while in beta.
-                  </p>
+                  </motion.p>
                   <div className="flex flex-wrap gap-4">
-                    <div className="flex items-center gap-2 text-slate-300">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 }}
+                      className="flex items-center gap-2 text-slate-300"
+                    >
                       <CheckCircle2 className="h-5 w-5 text-amber-500" />
                       <span>No Credit Card Required</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-300">
+                    </motion.div>
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.5 }}
+                      className="flex items-center gap-2 text-slate-300"
+                    >
                       <CheckCircle2 className="h-5 w-5 text-amber-500" />
                       <span>Instant Setup</span>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
                 <div className="lg:w-1/3 w-full">
-                  <div className="bg-white rounded-3xl p-8 shadow-xl">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30, rotate: 2 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    whileHover={{ scale: 1.02, rotate: 1 }}
+                    className="bg-white rounded-3xl p-8 shadow-xl"
+                  >
                     <div className="text-slate-500 font-bold uppercase tracking-widest text-xs mb-4">Beta Access</div>
                     <div className="flex items-baseline gap-1 mb-6">
                       <span className="text-5xl font-extrabold text-slate-900">$0</span>
                       <span className="text-slate-500 font-medium">/ forever</span>
                     </div>
                     <ul className="space-y-4 mb-8">
-                      {["Unlimited Daily Logs", "Full Expense Tracking", "CSV Data Export", "Custom Pricing Table", "Mobile App (PWA)"].map(item => (
-                        <li key={item} className="flex items-center gap-3 text-slate-600 font-medium">
+                      {["Unlimited Daily Logs", "Full Expense Tracking", "CSV Data Export", "Custom Pricing Table", "Mobile App (PWA)"].map((item, i) => (
+                        <motion.li 
+                          key={item} 
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.6 + (i * 0.1) }}
+                          className="flex items-center gap-3 text-slate-600 font-medium"
+                        >
                           <CheckCircle2 className="h-5 w-5 text-green-500" />
                           {item}
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
                     {user ? (
@@ -368,10 +522,10 @@ export default function LandingPage() {
                         </Button>
                       </Link>
                     )}
-                  </div>
+                  </motion.div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
       </main>
