@@ -220,10 +220,10 @@ export default function LandingPage() {
                     </span>
                   </motion.div>
 
-                  <div className="overflow-hidden mb-8">
+                  <div className="overflow-visible mb-8">
                     <motion.h1 
                       variants={textRevealVariants}
-                      className="text-6xl sm:text-8xl font-black tracking-tight text-slate-900 leading-[0.95]"
+                      className="text-6xl sm:text-8xl font-black tracking-tight text-slate-900 leading-[1.1] pb-2"
                     >
                       Master Your <br />
                       <motion.span 
@@ -231,7 +231,7 @@ export default function LandingPage() {
                           backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                         }}
                         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                        className="bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-[length:200%_auto] bg-clip-text text-transparent italic"
+                        className="bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-[length:200%_auto] bg-clip-text text-transparent italic inline-block pb-2"
                       >
                         Meal Expenses
                       </motion.span>
