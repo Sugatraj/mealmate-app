@@ -88,44 +88,8 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-amber-100 selection:text-amber-900">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-amber-100/50 bg-white/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-200">
-              <Utensils className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-extrabold tracking-tight text-slate-900">
-              MealMate
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/how-it-works" className="hidden md:block text-sm font-semibold text-slate-600 hover:text-amber-600 transition-colors">How it Works</Link>
-            <Link href="/faq" className="hidden md:block text-sm font-semibold text-slate-600 hover:text-amber-600 transition-colors">FAQ</Link>
-            {user ? (
-              <Link href="/dashboard">
-                <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
-                  Go to Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" className="hidden sm:block">
-                  <Button variant="ghost" className="text-slate-600 hover:text-amber-600">Sign In</Button>
-                </Link>
-                <Link href="/signup">
-                  <Button className="rounded-full bg-slate-900 px-6 font-semibold text-white hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-200 transition-all">
-                    Sign Up
-                  </Button>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
-
-      <main className="pt-16">
+    <div className="bg-slate-50 selection:bg-amber-100 selection:text-amber-900">
+      <main>
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 sm:py-32">
           <div className="absolute -top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-amber-200/20 blur-[120px]" />
@@ -411,35 +375,7 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
-                <Utensils className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-lg font-extrabold tracking-tight text-slate-900">
-                MealMate
-              </span>
-            </div>
-            
-            <div className="flex items-center gap-8">
-              <Link href="/about" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">About Us</Link>
-              <Link href="/how-it-works" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">How it Works</Link>
-              <Link href="/faq" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">FAQ</Link>
-              <Link href="/contact" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Contact</Link>
-              <a href="#" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Privacy</a>
-              <a href="#" className="text-sm font-semibold text-slate-500 hover:text-amber-600 transition-colors">Terms</a>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm">
-            &copy; {new Date().getFullYear()} MealMate. All rights reserved. 
-            Designed for better food management.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
+

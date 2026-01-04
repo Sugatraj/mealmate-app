@@ -7,25 +7,8 @@ import { motion } from "framer-motion";
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-amber-100 selection:text-amber-900">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <ChevronLeft className="h-4 w-4 text-slate-400" />
-            <span className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Back to Home</span>
-          </Link>
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500">
-              <Utensils className="h-4 w-4 text-white" />
-            </div>
-            <span className="font-bold text-slate-900">MealMate</span>
-          </div>
-          <div className="w-24 md:block hidden"></div>
-        </div>
-      </nav>
-
-      <main className="pt-32 pb-20">
+    <div className="bg-slate-50 selection:bg-amber-100 selection:text-amber-900">
+      <main className="py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-extrabold text-slate-900 mb-4">Get in Touch</h1>
@@ -130,14 +113,7 @@ export default function Contact() {
           </div>
         </div>
       </main>
-
-      <footer className="border-t border-slate-100 py-12 bg-slate-50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-slate-500 text-sm">
-            &copy; {new Date().getFullYear()} MealMate. We love hearing from our users.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
+

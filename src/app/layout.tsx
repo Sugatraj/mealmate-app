@@ -5,6 +5,7 @@ import { VisualEditsMessenger } from "orchids-visual-edits";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ApprovalGate } from "@/components/ApprovalGate";
+import { LayoutWrapper } from "@/components/LayoutWrapper";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -46,14 +47,17 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
-      <body
-        className={`${outfit.variable} ${jetbrainsMono.variable} font-sans antialiased`}
-      >
-        <AuthProvider>
-          <ApprovalGate>
-            {children}
-          </ApprovalGate>
-        </AuthProvider>
+        <body
+          className={`${outfit.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        >
+          <AuthProvider>
+            <ApprovalGate>
+              <LayoutWrapper>
+                {children}
+              </LayoutWrapper>
+            </ApprovalGate>
+          </AuthProvider>
+
         <Toaster position="top-right" richColors />
         <VisualEditsMessenger />
         <script
