@@ -15,7 +15,9 @@ export function ApprovalGate({ children }: ApprovalGateProps) {
   const pathname = usePathname();
   const { userProfile, loading, isApproved, isAdmin, logout } = useAuth();
 
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  // Normalize pathname to handle trailing slashes for public route check
+  const normalizedPathname = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
+  const isPublicRoute = PUBLIC_ROUTES.includes(normalizedPathname);
 
   if (isPublicRoute) {
     return <>{children}</>;
