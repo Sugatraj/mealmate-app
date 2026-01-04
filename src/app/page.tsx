@@ -93,26 +93,52 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 sm:py-32">
           {/* Animated Background Elements */}
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.2, 1],
-              x: [0, 50, 0],
-              y: [0, 30, 0] 
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-amber-200/20 blur-[120px]" 
-          />
-          <motion.div 
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              x: [0, -50, 0],
-              y: [0, -30, 0] 
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute -bottom-[10%] -left-[10%] h-[500px] w-[500px] rounded-full bg-orange-200/20 blur-[120px]" 
-          />
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.2, 1],
+                x: [0, 50, 0],
+                y: [0, 30, 0] 
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-[10%] -right-[10%] h-[600px] w-[600px] rounded-full bg-amber-200/20 blur-[120px]" 
+            />
+            <motion.div 
+              animate={{ 
+                scale: [1.2, 1, 1.2],
+                x: [0, -50, 0],
+                y: [0, -30, 0] 
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+              className="absolute -bottom-[10%] -left-[10%] h-[600px] w-[600px] rounded-full bg-orange-200/20 blur-[120px]" 
+            />
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay" />
+            
+            {/* Floating Micro-icons */}
+            <motion.div
+              animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-[20%] left-[5%] text-amber-500/10"
+            >
+              <Utensils size={120} />
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute bottom-[20%] right-[5%] text-orange-500/10"
+            >
+              <PieChart size={150} />
+            </motion.div>
+            <motion.div
+              animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-[40%] right-[15%] text-yellow-500/10"
+            >
+              <DollarSign size={80} />
+            </motion.div>
+          </div>
           
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="flex flex-col lg:flex-row items-center gap-16">
               <div className="flex-1 text-center lg:text-left">
                 <motion.div
@@ -124,7 +150,8 @@ export default function LandingPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6 cursor-default transition-all hover:bg-amber-100"
                   >
                     <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
                     Trusted by students & professionals worldwide
@@ -136,9 +163,13 @@ export default function LandingPage() {
                     className="text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]"
                   >
                     Master Your <br />
-                    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+                    <motion.span 
+                      animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
+                      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                      className="bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 bg-[length:200%_auto] bg-clip-text text-transparent"
+                    >
                       Meal Expenses
-                    </span>
+                    </motion.span>
                   </motion.h1>
                   <motion.p 
                     initial={{ opacity: 0, y: 20 }}
@@ -159,10 +190,21 @@ export default function LandingPage() {
                       <Link href="/dashboard">
                         <Button
                           size="lg"
-                          className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95"
+                          className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95 group relative overflow-hidden"
                         >
+                          <motion.span
+                            initial={{ x: "-100%" }}
+                            whileHover={{ x: "100%" }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 bg-white/10 skew-x-12"
+                          />
                           Go to Dashboard
-                          <ArrowRight className="ml-2 h-5 w-5" />
+                          <motion.span
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                          </motion.span>
                         </Button>
                       </Link>
                     ) : (
@@ -170,15 +212,36 @@ export default function LandingPage() {
                         <Link href="/signup">
                           <Button
                             size="lg"
-                            className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95"
+                            className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95 group relative overflow-hidden"
                           >
+                            <motion.span
+                              initial={{ x: "-100%" }}
+                              whileHover={{ x: "100%" }}
+                              transition={{ duration: 0.5 }}
+                              className="absolute inset-0 bg-white/10 skew-x-12"
+                            />
                             Start Tracking Now
-                            <ArrowRight className="ml-2 h-5 w-5" />
+                            <motion.span
+                              animate={{ x: [0, 5, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity }}
+                            >
+                              <ArrowRight className="ml-2 h-5 w-5" />
+                            </motion.span>
                           </Button>
                         </Link>
                         <Link href="/login">
-                          <Button size="lg" variant="outline" className="h-14 rounded-full px-10 text-lg border-slate-200 hover:bg-slate-50 transition-all">
+                          <Button 
+                            size="lg" 
+                            variant="outline" 
+                            className="h-14 rounded-full px-10 text-lg border-slate-200 hover:bg-slate-50 transition-all group"
+                          >
                             View Demo
+                            <motion.span
+                              whileHover={{ rotate: 15 }}
+                              className="ml-2"
+                            >
+                              <ChevronRight className="h-5 w-5 text-slate-400 group-hover:text-amber-500 transition-colors" />
+                            </motion.span>
                           </Button>
                         </Link>
                       </>
