@@ -10,7 +10,7 @@ import {
   ArrowRight, 
   TrendingUp, 
   Calendar, 
-  DollarSign, 
+  IndianRupee, 
   Shield, 
   CheckCircle2,
   Clock,
@@ -129,7 +129,7 @@ export default function LandingPage() {
       glow: "group-hover:shadow-blue-200"
     },
     {
-      icon: DollarSign,
+      icon: IndianRupee,
       title: "Expense Tracking",
       description: "See exactly how much you're spending. Real-time cost calculation based on your custom pricing.",
       color: "bg-green-500",
@@ -193,7 +193,7 @@ export default function LandingPage() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="absolute top-[45%] right-[10%] text-yellow-500/10"
             >
-              <DollarSign size={120} />
+              <IndianRupee size={120} />
             </motion.div>
           </div>
           
