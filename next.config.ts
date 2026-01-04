@@ -7,6 +7,7 @@ const loaderPath = require.resolve('orchids-visual-edits/loader.js');
 const nextConfig: NextConfig = {
   output: 'export',
   basePath: '/mealmate-app',
+  trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [
