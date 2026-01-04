@@ -154,7 +154,7 @@ export default function HowItWorks() {
                 </Button>
               </Link>
               <Link href="/login">
-                <Button size="lg" variant="outline" className="h-14 rounded-full border-slate-700 text-white hover:bg-slate-800 px-10 text-lg">
+                <Button size="lg" variant="ghost" className="h-14 rounded-full border border-slate-700 text-white hover:bg-slate-800 px-10 text-lg">
                   Sign In
                 </Button>
               </Link>
