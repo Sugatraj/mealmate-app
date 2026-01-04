@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
@@ -16,13 +16,92 @@ import {
   Clock,
   PieChart,
   Settings,
-  ChevronRight
+  ChevronRight,
+  Zap,
+  Star,
+  Users
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { 
+  motion, 
+  useScroll, 
+  useTransform, 
+  useSpring, 
+  useMotionValue,
+  Variants
+} from "framer-motion";
+
+// Advanced variants for consistent reveal animations
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { 
+      type: "spring", 
+      stiffness: 100, 
+      damping: 15 
+    } 
+  },
+};
+
+const textRevealVariants: Variants = {
+  hidden: { opacity: 0, y: "100%" },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.8, 
+      ease: [0.33, 1, 0.68, 1] 
+    } 
+  },
+};
 
 export default function LandingPage() {
   const router = useRouter();
   const { user, loading, isApproved, isAdmin } = useAuth();
+  
+  // Parallax scroll effects
+  const { scrollYProgress } = useScroll();
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -500]);
+  const rotateParallax = useTransform(scrollYProgress, [0, 1], [0, 45]);
+
+  // 3D Card mouse tracking
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   useEffect(() => {
     if (!loading && user && (isApproved || isAdmin)) {
@@ -46,165 +125,145 @@ export default function LandingPage() {
       icon: Calendar,
       title: "Daily Logging",
       description: "Track your tiffin, meals, and snacks with just a few taps. Never miss a meal entry again.",
-      color: "bg-blue-500"
+      color: "bg-blue-500",
+      glow: "group-hover:shadow-blue-200"
     },
     {
       icon: DollarSign,
       title: "Expense Tracking",
       description: "See exactly how much you're spending. Real-time cost calculation based on your custom pricing.",
-      color: "bg-green-500"
+      color: "bg-green-500",
+      glow: "group-hover:shadow-green-200"
     },
     {
       icon: TrendingUp,
       title: "Monthly Analytics",
       description: "Beautiful charts showing your spending patterns by category and estimated vs actual costs.",
-      color: "bg-purple-500"
+      color: "bg-purple-500",
+      glow: "group-hover:shadow-purple-200"
     },
     {
       icon: Shield,
       title: "Secure & Reliable",
       description: "Admin-verified accounts and offline support ensure your data is safe and always accessible.",
-      color: "bg-orange-500"
-    },
-  ];
-
-  const steps = [
-    {
-      title: "Sign Up",
-      description: "Create your account and wait for admin approval to ensure a secure community.",
-    },
-    {
-      title: "Set Your Pricing",
-      description: "Configure how much you pay for full tiffins, half meals, or custom snacks.",
-    },
-    {
-      title: "Log Daily",
-      description: "Quickly mark what you ate today. Use bulk operations for vacations or leaves.",
-    },
-    {
-      title: "Analyze & Export",
-      description: "Review your monthly summaries and export data to CSV for your records.",
+      color: "bg-orange-500",
+      glow: "group-hover:shadow-orange-200"
     },
   ];
 
   return (
-    <div className="bg-slate-50 selection:bg-amber-100 selection:text-amber-900">
+    <div className="bg-slate-50 selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
       <main>
         {/* Hero Section */}
-        <section className="relative overflow-hidden py-24 sm:py-32">
-          {/* Animated Background Elements */}
+        <section className="relative min-h-screen flex items-center overflow-hidden py-24 sm:py-32">
+          {/* Parallax Background Elements */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <motion.div 
+              style={{ y: y1, rotate: rotateParallax }}
               animate={{ 
-                scale: [1, 1.2, 1],
-                x: [0, 50, 0],
-                y: [0, 30, 0] 
+                scale: [1, 1.1, 1],
               }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-[10%] -right-[10%] h-[600px] w-[600px] rounded-full bg-amber-200/20 blur-[120px]" 
+              className="absolute -top-[10%] -right-[10%] h-[800px] w-[800px] rounded-full bg-gradient-to-br from-amber-200/20 to-orange-200/20 blur-[120px]" 
             />
             <motion.div 
+              style={{ y: y2 }}
               animate={{ 
-                scale: [1.2, 1, 1.2],
-                x: [0, -50, 0],
-                y: [0, -30, 0] 
+                scale: [1.1, 1, 1.1],
               }}
               transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute -bottom-[10%] -left-[10%] h-[600px] w-[600px] rounded-full bg-orange-200/20 blur-[120px]" 
+              className="absolute -bottom-[10%] -left-[10%] h-[800px] w-[800px] rounded-full bg-gradient-to-tr from-yellow-200/20 to-amber-200/20 blur-[120px]" 
             />
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay" />
             
-            {/* Floating Micro-icons */}
-            <motion.div
-              animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-[20%] left-[5%] text-amber-500/10"
-            >
-              <Utensils size={120} />
+            {/* Animated Grid */}
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.05] mix-blend-overlay" />
+            
+            {/* Parallax Icons */}
+            <motion.div style={{ y: y1 }} className="absolute top-[15%] left-[8%] text-amber-500/10">
+              <Utensils size={180} />
             </motion.div>
-            <motion.div
-              animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-[20%] right-[5%] text-orange-500/10"
-            >
-              <PieChart size={150} />
+            <motion.div style={{ y: y2 }} className="absolute bottom-[10%] right-[5%] text-orange-500/10">
+              <PieChart size={220} />
             </motion.div>
-            <motion.div
-              animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-[40%] right-[15%] text-yellow-500/10"
+            <motion.div 
+              animate={{ 
+                y: [0, -30, 0],
+                rotate: [0, 15, 0]
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-[45%] right-[10%] text-yellow-500/10"
             >
-              <DollarSign size={80} />
+              <DollarSign size={120} />
             </motion.div>
           </div>
           
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="flex flex-col lg:flex-row items-center gap-20">
               <div className="flex-1 text-center lg:text-left">
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  initial="hidden"
+                  animate="visible"
+                  variants={containerVariants}
                 >
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                    whileHover={{ scale: 1.05 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-6 cursor-default transition-all hover:bg-amber-100"
+                    variants={itemVariants}
+                    className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/50 backdrop-blur-sm px-4 py-2 text-sm font-semibold text-amber-700 mb-8 cursor-default"
                   >
-                    <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-                    Trusted by students & professionals worldwide
+                    <motion.div
+                      animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="h-2 w-2 rounded-full bg-amber-500"
+                    />
+                    <span className="flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
+                      The #1 Meal Tracker for Students
+                    </span>
                   </motion.div>
-                  <motion.h1 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
-                    className="text-5xl sm:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]"
-                  >
-                    Master Your <br />
-                    <motion.span 
-                      animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
-                      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                      className="bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 bg-[length:200%_auto] bg-clip-text text-transparent"
+
+                  <div className="overflow-hidden mb-8">
+                    <motion.h1 
+                      variants={textRevealVariants}
+                      className="text-6xl sm:text-8xl font-black tracking-tight text-slate-900 leading-[0.95]"
                     >
-                      Meal Expenses
-                    </motion.span>
-                  </motion.h1>
+                      Master Your <br />
+                      <motion.span 
+                        animate={{ 
+                          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                        }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                        className="bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-[length:200%_auto] bg-clip-text text-transparent italic"
+                      >
+                        Meal Expenses
+                      </motion.span>
+                    </motion.h1>
+                  </div>
+
                   <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.8 }}
-                    className="text-xl text-slate-600 max-w-2xl mb-10 leading-relaxed"
+                    variants={itemVariants}
+                    className="text-xl text-slate-600 max-w-2xl mb-12 leading-relaxed font-medium"
                   >
                     Stop guessing your monthly mess bill. MealMate provides a simple, 
                     powerful way to log your daily tiffins and track every cent you spend on food.
                   </motion.p>
+
                   <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+                    variants={itemVariants}
+                    className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6"
                   >
                     {user ? (
                       <Link href="/dashboard">
                         <Button
                           size="lg"
-                          className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95 group relative overflow-hidden"
+                          className="h-16 rounded-full bg-slate-900 px-10 text-xl font-bold text-white hover:bg-amber-600 hover:shadow-xl hover:shadow-amber-500/20 transition-all active:scale-95 group relative overflow-hidden"
                         >
                           <motion.span
                             initial={{ x: "-100%" }}
                             whileHover={{ x: "100%" }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 bg-white/10 skew-x-12"
+                            transition={{ duration: 0.8 }}
+                            className="absolute inset-0 bg-white/20 skew-x-12"
                           />
                           Go to Dashboard
-                          <motion.span
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                          >
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                          </motion.span>
+                          <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
                     ) : (
@@ -212,138 +271,184 @@ export default function LandingPage() {
                         <Link href="/signup">
                           <Button
                             size="lg"
-                            className="h-14 rounded-full bg-slate-900 px-10 text-lg font-bold text-white hover:bg-amber-600 hover:scale-105 transition-all active:scale-95 group relative overflow-hidden"
+                            className="h-16 rounded-full bg-slate-900 px-10 text-xl font-bold text-white hover:bg-amber-600 hover:shadow-xl hover:shadow-amber-500/20 transition-all active:scale-95 group relative overflow-hidden"
                           >
                             <motion.span
                               initial={{ x: "-100%" }}
                               whileHover={{ x: "100%" }}
-                              transition={{ duration: 0.5 }}
-                              className="absolute inset-0 bg-white/10 skew-x-12"
+                              transition={{ duration: 0.8 }}
+                              className="absolute inset-0 bg-white/20 skew-x-12"
                             />
-                            Start Tracking Now
-                            <motion.span
-                              animate={{ x: [0, 5, 0] }}
-                              transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                              <ArrowRight className="ml-2 h-5 w-5" />
-                            </motion.span>
+                            Start Tracking Free
+                            <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </Link>
                         <Link href="/login">
                           <Button 
                             size="lg" 
                             variant="outline" 
-                            className="h-14 rounded-full px-10 text-lg border-slate-200 hover:bg-slate-50 transition-all group"
+                            className="h-16 rounded-full px-10 text-xl font-bold border-slate-200 hover:bg-white hover:border-amber-500 hover:text-amber-600 transition-all group shadow-sm"
                           >
-                            View Demo
-                            <motion.span
-                              whileHover={{ rotate: 15 }}
-                              className="ml-2"
-                            >
-                              <ChevronRight className="h-5 w-5 text-slate-400 group-hover:text-amber-500 transition-colors" />
-                            </motion.span>
+                            Live Demo
+                            <ChevronRight className="ml-2 h-6 w-6 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all" />
                           </Button>
                         </Link>
                       </>
                     )}
                   </motion.div>
+
+                  <motion.div 
+                    variants={itemVariants}
+                    className="mt-12 flex items-center justify-center lg:justify-start gap-8"
+                  >
+                    <div className="flex -space-x-3">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
+                          <img 
+                            src={`https://i.pravatar.cc/100?u=${i}`} 
+                            alt="User" 
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      <span className="font-bold text-slate-900 block">500+ Students</span>
+                      tracking their expenses daily
+                    </div>
+                  </motion.div>
                 </motion.div>
               </div>
 
-              {/* Showcase UI Mockup */}
-              <div className="flex-1 w-full max-w-2xl lg:max-w-none">
+              {/* Showcase UI Mockup with 3D Interaction */}
+              <div className="flex-1 w-full max-w-2xl lg:max-w-none perspective-1000">
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, rotateY: -10 }}
-                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                  whileHover={{ y: -10, rotateX: 2, rotateY: 2 }}
-                  className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl shadow-amber-200/50"
+                  style={{
+                    rotateX,
+                    rotateY,
+                    transformStyle: "preserve-3d",
+                  }}
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                  initial={{ opacity: 0, x: 100, rotateY: -20 }}
+                  animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                  transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+                  className="relative rounded-[2rem] border border-slate-200 bg-white/80 backdrop-blur-xl p-6 shadow-[0_32px_64px_-12px_rgba(251,191,36,0.15)] group"
                 >
-                  {/* Mock Dashboard Top */}
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-                    <div className="flex items-center gap-3">
-                      <motion.div 
-                        animate={{ rotate: [0, 10, 0] }}
-                        transition={{ duration: 4, repeat: Infinity }}
-                        className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center"
-                      >
-                        <Settings className="h-5 w-5 text-slate-400" />
-                      </motion.div>
-                      <div>
-                        <div className="h-3 w-24 rounded-full bg-slate-200 mb-1" />
-                        <div className="h-2 w-16 rounded-full bg-slate-100" />
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center">
-                        <Calendar className="h-4 w-4 text-amber-600" />
-                      </div>
-                      <div className="h-8 w-8 rounded-lg bg-slate-50" />
-                    </div>
-                  </div>
-
-                  {/* Mock Stats */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <motion.div 
-                      whileHover={{ scale: 1.02 }}
-                      className="rounded-xl border border-slate-100 bg-slate-50/50 p-4"
-                    >
-                      <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Spent This Month</div>
-                      <div className="text-2xl font-bold text-slate-900">$342.50</div>
-                      <div className="mt-2 flex items-center text-xs text-green-600 font-medium">
-                        <TrendingUp className="h-3 w-3 mr-1" /> 12% vs last month
-                      </div>
-                    </motion.div>
-                    <motion.div 
-                      whileHover={{ scale: 1.02 }}
-                      className="rounded-xl border border-slate-100 bg-slate-50/50 p-4"
-                    >
-                      <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Meals</div>
-                      <div className="text-2xl font-bold text-slate-900">48</div>
-                      <div className="mt-2 flex items-center text-xs text-amber-600 font-medium">
-                        <PieChart className="h-3 w-3 mr-1" /> 82% tiffin rate
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Mock Log Entry */}
-                  <div className="space-y-3">
-                    <div className="text-sm font-bold text-slate-900 mb-2">Recent Logs</div>
-                    {[
-                      { label: "Full Tiffin", price: "$5.00", time: "Today, 1:30 PM", icon: Utensils, color: "text-blue-500" },
-                      { label: "Evening Snacks", price: "$2.50", time: "Today, 5:45 PM", icon: Clock, color: "text-amber-500" },
-                      { label: "Half Meal", price: "$3.00", time: "Yesterday, 8:00 PM", icon: CheckCircle2, color: "text-green-500" }
-                    ].map((item, i) => (
-                      <motion.div 
-                        key={i} 
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.6 + (i * 0.1) }}
-                        whileHover={{ x: 5 }}
-                        className="flex items-center justify-between rounded-lg border border-slate-100 p-3 bg-white hover:border-amber-200 transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg bg-slate-50 ${item.color}`}>
-                            <item.icon className="h-4 w-4" />
-                          </div>
-                          <div>
-                            <div className="text-sm font-semibold text-slate-900">{item.label}</div>
-                            <div className="text-xs text-slate-400">{item.time}</div>
-                          </div>
+                  <div style={{ transform: "translateZ(50px)" }} className="relative">
+                    {/* Mock Dashboard Top */}
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-6 mb-6">
+                      <div className="flex items-center gap-4">
+                        <motion.div 
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                          className="h-12 w-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400"
+                        >
+                          <Settings className="h-6 w-6" />
+                        </motion.div>
+                        <div>
+                          <div className="h-4 w-32 rounded-full bg-slate-200 mb-2" />
+                          <div className="h-3 w-20 rounded-full bg-slate-100" />
                         </div>
-                        <div className="text-sm font-bold text-slate-900">{item.price}</div>
+                      </div>
+                      <div className="flex gap-3">
+                        <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                          <Calendar className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div className="h-10 w-10 rounded-xl bg-slate-50 flex items-center justify-center">
+                          <Zap className="h-5 w-5 text-slate-300" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mock Stats */}
+                    <div className="grid grid-cols-2 gap-6 mb-8">
+                      <motion.div 
+                        whileHover={{ scale: 1.05, y: -5 }}
+                        className="rounded-2xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:border-amber-200 hover:bg-white"
+                      >
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Spent This Month</div>
+                        <div className="text-3xl font-black text-slate-900">₹4,250</div>
+                        <div className="mt-3 flex items-center text-xs text-green-600 font-bold bg-green-50 w-fit px-2 py-1 rounded-full">
+                          <TrendingUp className="h-3 w-3 mr-1" /> +12%
+                        </div>
                       </motion.div>
-                    ))}
+                      <motion.div 
+                        whileHover={{ scale: 1.05, y: -5 }}
+                        className="rounded-2xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:border-amber-200 hover:bg-white"
+                      >
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Total Meals</div>
+                        <div className="text-3xl font-black text-slate-900">48</div>
+                        <div className="mt-3 flex items-center text-xs text-amber-600 font-bold bg-amber-50 w-fit px-2 py-1 rounded-full">
+                          <PieChart className="h-3 w-3 mr-1" /> 82%
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Mock Log Entry */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-sm font-black text-slate-900">Recent Activity</div>
+                        <div className="text-xs font-bold text-amber-600 hover:underline cursor-pointer">View all</div>
+                      </div>
+                      {[
+                        { label: "Full Tiffin", price: "₹80", time: "Today, 1:30 PM", icon: Utensils, color: "text-blue-500", bg: "bg-blue-50" },
+                        { label: "Evening Snacks", price: "₹45", time: "Today, 5:45 PM", icon: Clock, color: "text-amber-500", bg: "bg-amber-50" },
+                        { label: "Half Meal", price: "₹60", time: "Yesterday, 8:00 PM", icon: CheckCircle2, color: "text-green-500", bg: "bg-green-50" }
+                      ].map((item, i) => (
+                        <motion.div 
+                          key={i} 
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.8 + (i * 0.1) }}
+                          whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,1)" }}
+                          className="flex items-center justify-between rounded-2xl border border-slate-100 p-4 bg-slate-50/30 transition-all hover:border-amber-200 hover:shadow-lg hover:shadow-amber-100/50"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className={`p-3 rounded-xl ${item.bg} ${item.color}`}>
+                              <item.icon className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-slate-900">{item.label}</div>
+                              <div className="text-xs text-slate-400 font-medium">{item.time}</div>
+                            </div>
+                          </div>
+                          <div className="text-sm font-black text-slate-900">{item.price}</div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
                   
-                  {/* Floating Action Button Mock */}
+                  {/* Floating Elements (Out of box effect) */}
                   <motion.div 
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    whileHover={{ scale: 1.1 }}
-                    className="absolute -bottom-4 -right-4 h-12 w-12 rounded-full bg-amber-500 shadow-lg shadow-amber-300 flex items-center justify-center text-white cursor-pointer hover:bg-amber-600 transition-colors"
+                    animate={{ 
+                      y: [0, -15, 0],
+                      rotate: [15, 20, 15]
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -top-10 -left-10 h-24 w-24 rounded-3xl bg-white shadow-2xl flex flex-col items-center justify-center p-4 border border-slate-100"
+                    style={{ transform: "translateZ(80px)" }}
                   >
-                    <span className="text-2xl font-bold">+</span>
+                    <div className="text-amber-500 font-black text-xl mb-1">98%</div>
+                    <div className="text-[10px] font-bold text-slate-400 text-center leading-tight uppercase">Accuracy Rate</div>
+                  </motion.div>
+
+                  <motion.div 
+                    animate={{ 
+                      y: [0, 15, 0],
+                    }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                    whileHover={{ scale: 1.2, rotate: 90 }}
+                    className="absolute -bottom-8 -right-8 h-20 w-20 rounded-full bg-slate-900 shadow-2xl shadow-slate-900/40 flex items-center justify-center text-white cursor-pointer group/btn"
+                    style={{ transform: "translateZ(100px)" }}
+                  >
+                    <motion.span 
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="text-4xl font-light"
+                    >
+                      +
+                    </motion.span>
                   </motion.div>
                 </motion.div>
               </div>
@@ -351,19 +456,29 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-24 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Features Section with Hover Reveal */}
+        <section className="py-32 bg-white relative overflow-hidden">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
+              transition={{ duration: 0.8 }}
+              className="text-center mb-24"
             >
-              <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Features</h2>
-              <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-6">Everything you need to manage meals</h3>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              <motion.span 
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-sm font-black uppercase tracking-widest mb-6 inline-block"
+              >
+                Features
+              </motion.span>
+              <h2 className="text-4xl sm:text-6xl font-black text-slate-900 mb-8 tracking-tight">
+                Everything you need to <br />
+                <span className="text-amber-500 italic">manage meals</span>
+              </h2>
+              <p className="text-xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed">
                 Simple yet powerful features designed specifically for anyone who subscribes to a mess or tiffin service.
               </p>
             </motion.div>
@@ -372,219 +487,230 @@ export default function LandingPage() {
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -10 }}
-                  className="group relative rounded-2xl border border-slate-100 bg-slate-50/30 p-8 hover:bg-white hover:border-amber-200 hover:shadow-xl hover:shadow-amber-100/50 transition-all"
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -15 }}
+                  className="group relative rounded-[2.5rem] border border-slate-100 bg-slate-50/50 p-10 hover:bg-white transition-all duration-500 hover:border-amber-200 hover:shadow-[0_40px_80px_-15px_rgba(251,191,36,0.1)]"
                 >
                   <motion.div 
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.5 }}
-                    className={`rounded-xl ${feature.color} p-3 w-fit mb-6 text-white group-hover:scale-110 transition-transform`}
+                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                    className={`rounded-3xl ${feature.color} p-5 w-fit mb-8 text-white shadow-xl ${feature.glow}`}
                   >
-                    <feature.icon className="h-6 w-6" />
+                    <feature.icon className="h-8 w-8" />
                   </motion.div>
-                  <h4 className="text-xl font-bold text-slate-900 mb-3">
+                  <h4 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">
                     {feature.title}
                   </h4>
-                  <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                  <p className="text-slate-500 leading-relaxed font-medium">{feature.description}</p>
+                  
+                  <div className="mt-8 pt-8 border-t border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity flex items-center text-amber-600 font-bold text-sm gap-2">
+                    Learn more <ArrowRight className="h-4 w-4" />
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
+          
+          {/* Subtle background decoration */}
+          <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-96 bg-gradient-to-r from-amber-50/50 via-transparent to-orange-50/50 pointer-events-none" />
         </section>
 
-        {/* How It Works Section */}
-        <section className="py-24 bg-slate-50 overflow-hidden">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row items-center gap-16">
+        {/* Dynamic Workflow Section */}
+        <section className="py-32 bg-slate-900 text-white overflow-hidden relative">
+          {/* Background particles/elements */}
+          <div className="absolute inset-0 opacity-20">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0.1, 0.5, 0.1],
+                  y: [Math.random() * 1000, Math.random() * 1000 - 500],
+                  x: [Math.random() * 1000, Math.random() * 1000 - 500]
+                }}
+                transition={{ duration: Math.random() * 10 + 10, repeat: Infinity }}
+                className="absolute h-1 w-1 bg-amber-500 rounded-full"
+                style={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="flex flex-col lg:flex-row items-center gap-24">
               <div className="lg:w-1/2">
                 <motion.div
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
                 >
-                  <h2 className="text-base font-bold text-amber-600 uppercase tracking-widest mb-4">Workflow</h2>
-                  <h3 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-8 leading-tight">
+                  <span className="text-amber-500 font-black uppercase tracking-[0.3em] text-sm mb-6 block">Workflow</span>
+                  <h3 className="text-5xl sm:text-7xl font-black mb-10 leading-none tracking-tighter">
                     Log your day in <br />
-                    <span className="text-amber-500 italic">less than 5 seconds</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 italic">5 seconds.</span>
                   </h3>
                 </motion.div>
-                <div className="space-y-8">
-                  {steps.map((step, index) => (
+                
+                <div className="space-y-10">
+                  {[
+                    { title: "Quick Sign Up", desc: "Start in seconds with Google or email auth." },
+                    { title: "Smart Pricing", desc: "Customize costs for different meal types." },
+                    { title: "One-Tap Log", desc: "Just hit the plus button and you're done." }
+                  ].map((step, index) => (
                     <motion.div 
                       key={step.title}
                       initial={{ opacity: 0, x: -30 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="flex items-start gap-5 group"
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.15 }}
+                      className="flex items-center gap-8 group cursor-default"
                     >
-                      <motion.div 
-                        whileInView={{ scale: [1, 1.2, 1] }}
-                        transition={{ delay: index * 0.1 + 0.3 }}
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white border-2 border-amber-500 text-amber-600 font-bold shadow-sm group-hover:bg-amber-500 group-hover:text-white transition-colors"
-                      >
-                        {index + 1}
-                      </motion.div>
+                      <div className="relative">
+                        <div className="h-16 w-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl font-black group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                          {index + 1}
+                        </div>
+                        {index < 2 && (
+                          <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[2px] h-10 bg-gradient-to-b from-white/10 to-transparent" />
+                        )}
+                      </div>
                       <div>
-                        <h4 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-amber-600 transition-colors">{step.title}</h4>
-                        <p className="text-slate-600">{step.description}</p>
+                        <h4 className="text-2xl font-black mb-2 group-hover:text-amber-500 transition-colors">{step.title}</h4>
+                        <p className="text-slate-400 font-medium">{step.desc}</p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
               </div>
-              <div className="lg:w-1/2 w-full">
+              
+              <div className="lg:w-1/2 w-full relative">
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                  whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                  initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  className="relative rounded-3xl overflow-hidden shadow-2xl"
+                  transition={{ duration: 1, type: "spring" }}
+                  className="relative group"
                 >
-                   <div className="bg-slate-900 aspect-video flex items-center justify-center p-8">
-                      <div className="text-center">
-                        <motion.div 
-                          animate={{ 
-                            scale: [1, 1.1, 1],
-                            rotate: [0, 5, -5, 0]
-                          }}
-                          transition={{ duration: 5, repeat: Infinity }}
-                          className="h-20 w-20 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-6"
-                        >
-                           <TrendingUp className="h-10 w-10 text-amber-500" />
-                        </motion.div>
-                        <div className="text-white text-2xl font-bold mb-2">Real-time Analytics</div>
-                        <div className="text-slate-400">See your spending trends update instantly as you log.</div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-[3rem] blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200" />
+                  <div className="relative bg-slate-800 rounded-[2.5rem] p-12 aspect-square flex flex-col items-center justify-center text-center overflow-hidden border border-white/10">
+                    <motion.div 
+                      animate={{ 
+                        scale: [1, 1.2, 1],
+                        rotate: [0, 10, -10, 0]
+                      }}
+                      transition={{ duration: 8, repeat: Infinity }}
+                      className="relative z-10"
+                    >
+                      <div className="h-32 w-32 rounded-full bg-amber-500/20 flex items-center justify-center mb-8 mx-auto">
+                        <TrendingUp className="h-16 w-16 text-amber-500" />
                       </div>
-                   </div>
-                   <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md rounded-full px-4 py-1 text-xs font-semibold text-white border border-white/20">
-                     Live Preview
-                   </div>
+                    </motion.div>
+                    <h5 className="text-3xl font-black mb-4 relative z-10">Real-time Analytics</h5>
+                    <p className="text-slate-400 text-lg max-w-xs mx-auto relative z-10">Watch your spending trends update instantly with every meal you log.</p>
+                    
+                    {/* Animated grid overlay inside the box */}
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+                  </div>
                 </motion.div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Pricing/Value Section */}
-        <section className="py-24 bg-white overflow-hidden">
+        {/* Premium CTA Section */}
+        <section className="py-32 bg-white overflow-hidden">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div 
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 100 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="rounded-[40px] bg-slate-900 py-16 px-8 md:px-16 relative overflow-hidden"
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="rounded-[3rem] bg-slate-900 py-24 px-8 md:px-24 relative overflow-hidden group shadow-2xl shadow-amber-900/20"
             >
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.5, 1],
-                  opacity: [0.1, 0.2, 0.1]
-                }}
-                transition={{ duration: 10, repeat: Infinity }}
-                className="absolute top-0 right-0 h-64 w-64 rounded-full bg-amber-500/10 blur-[100px]" 
-              />
-              <motion.div 
-                animate={{ 
-                  scale: [1.5, 1, 1.5],
-                  opacity: [0.1, 0.2, 0.1]
-                }}
-                transition={{ duration: 10, repeat: Infinity }}
-                className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-orange-500/10 blur-[100px]" 
-              />
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-orange-500/10 pointer-events-none" />
               
-              <div className="relative flex flex-col lg:flex-row items-center justify-between gap-12">
-                <div className="lg:w-1/2">
-                  <motion.h3 
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="text-3xl sm:text-4xl font-extrabold text-white mb-6"
-                  >
-                    Ready to take control of your meal expenses?
-                  </motion.h3>
-                  <motion.p 
+              <div className="relative flex flex-col lg:flex-row items-center justify-between gap-16">
+                <div className="lg:w-3/5">
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="text-slate-400 text-lg mb-8 leading-relaxed"
                   >
-                    Join hundreds of users who use MealMate to manage their food budget. 
-                    It&apos;s 100% free while in beta.
-                  </motion.p>
-                  <div className="flex flex-wrap gap-4">
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.4 }}
-                      className="flex items-center gap-2 text-slate-300"
-                    >
-                      <CheckCircle2 className="h-5 w-5 text-amber-500" />
-                      <span>No Credit Card Required</span>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.5 }}
-                      className="flex items-center gap-2 text-slate-300"
-                    >
-                      <CheckCircle2 className="h-5 w-5 text-amber-500" />
-                      <span>Instant Setup</span>
-                    </motion.div>
-                  </div>
-                </div>
-                <div className="lg:w-1/3 w-full">
-                  <motion.div 
-                    initial={{ opacity: 0, y: 30, rotate: 2 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    whileHover={{ scale: 1.02, rotate: 1 }}
-                    className="bg-white rounded-3xl p-8 shadow-xl"
-                  >
-                    <div className="text-slate-500 font-bold uppercase tracking-widest text-xs mb-4">Beta Access</div>
-                    <div className="flex items-baseline gap-1 mb-6">
-                      <span className="text-5xl font-extrabold text-slate-900">$0</span>
-                      <span className="text-slate-500 font-medium">/ forever</span>
+                    <h3 className="text-5xl sm:text-7xl font-black text-white mb-8 tracking-tighter">
+                      Take control of your <br />
+                      <span className="text-amber-500 italic">meal budget</span>
+                    </h3>
+                    <p className="text-slate-400 text-xl mb-12 max-w-xl font-medium leading-relaxed">
+                      Join hundreds of users who use MealMate to manage their food budget. 
+                      Simple, fast, and completely free while in beta.
+                    </p>
+                    <div className="flex flex-wrap gap-8">
+                      <div className="flex items-center gap-3 text-slate-200 font-bold">
+                        <div className="h-10 w-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+                          <CheckCircle2 className="h-5 w-5 text-amber-500" />
+                        </div>
+                        No Credit Card
+                      </div>
+                      <div className="flex items-center gap-3 text-slate-200 font-bold">
+                        <div className="h-10 w-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+                          <CheckCircle2 className="h-5 w-5 text-amber-500" />
+                        </div>
+                        Instant Setup
+                      </div>
                     </div>
-                    <ul className="space-y-4 mb-8">
-                      {["Unlimited Daily Logs", "Full Expense Tracking", "CSV Data Export", "Custom Pricing Table", "Mobile App (PWA)"].map((item, i) => (
-                        <motion.li 
-                          key={item} 
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.6 + (i * 0.1) }}
-                          className="flex items-center gap-3 text-slate-600 font-medium"
-                        >
-                          <CheckCircle2 className="h-5 w-5 text-green-500" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </ul>
-                    {user ? (
-                      <Link href="/dashboard">
-                        <Button className="w-full h-14 rounded-2xl bg-amber-500 text-white font-bold text-lg hover:bg-amber-600 transition-all group">
-                          Go to Dashboard
-                          <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link href="/signup">
-                        <Button className="w-full h-14 rounded-2xl bg-amber-500 text-white font-bold text-lg hover:bg-amber-600 transition-all group">
-                          Get Started Free
-                          <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
-                    )}
+                  </motion.div>
+                </div>
+                
+                <div className="lg:w-2/5 w-full">
+                  <motion.div 
+                    whileHover={{ scale: 1.05, rotate: -2 }}
+                    className="bg-white rounded-[2.5rem] p-12 shadow-2xl relative overflow-hidden"
+                  >
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-8">
+                        <span className="px-4 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-black uppercase tracking-widest">Limited Beta</span>
+                        <Star className="h-6 w-6 text-amber-500 fill-amber-500" />
+                      </div>
+                      <div className="flex items-baseline gap-2 mb-10">
+                        <span className="text-7xl font-black text-slate-900 tracking-tighter">₹0</span>
+                        <span className="text-slate-400 font-bold text-xl">/ mo</span>
+                      </div>
+                      <ul className="space-y-5 mb-12">
+                        {["Unlimited Daily Logs", "CSV Data Export", "Custom Pricing Table", "Mobile App Access"].map((item) => (
+                          <li key={item} className="flex items-center gap-4 text-slate-600 font-bold">
+                            <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
+                              <CheckCircle2 className="h-4 w-4 text-green-600" />
+                            </div>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      {user ? (
+                        <Link href="/dashboard">
+                          <Button className="w-full h-16 rounded-2xl bg-amber-500 text-white font-black text-xl hover:bg-amber-600 transition-all hover:shadow-xl hover:shadow-amber-500/20 group">
+                            Dashboard
+                            <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Link href="/signup">
+                          <Button className="w-full h-16 rounded-2xl bg-slate-900 text-white font-black text-xl hover:bg-amber-600 transition-all hover:shadow-xl hover:shadow-amber-500/20 group">
+                            Join Beta Free
+                            <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
+                    
+                    {/* Background blob for the card */}
+                    <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 h-64 w-64 bg-amber-50 rounded-full blur-3xl pointer-events-none" />
                   </motion.div>
                 </div>
               </div>
@@ -592,7 +718,12 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
+      
+      {/* Scroll Progress Indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1.5 bg-amber-500 origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
     </div>
   );
 }
-
